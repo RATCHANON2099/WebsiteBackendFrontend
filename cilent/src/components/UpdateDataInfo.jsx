@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, Button, message, Layout, Spin } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 // *** ตรวจสอบว่า import ฟังก์ชันที่ถูกต้องจาก employee.jsx ***
-import { updateEmployee, getEmployeeById } from "../functions/employee";
+import { UpdateEmployee, GetDataEmployeeById } from "../functions/employee";
 
 const UpdateDataInfo = () => {
   const [form] = Form.useForm();
@@ -30,12 +30,12 @@ const UpdateDataInfo = () => {
       try {
         // --- Log #2: ตรวจสอบก่อนเรียก API ---
         console.log(
-          "[UpdateDataInfo] Calling getEmployeeByIdParm with ID:",
+          "[UpdateDataInfo] Calling GetDataEmployeeById with ID:",
           id
-        ); // *** ใช้ getEmployeeByIdParm ***
+        ); // *** ใช้ GetDataEmployeeById ***
 
         // *** เรียก API ดึงข้อมูล Employee ด้วย ID ที่ถูกต้อง ***
-        const res = await getEmployeeById(id, token);
+        const res = await GetDataEmployeeById(id, token);
 
         // --- Log #3: ตรวจสอบ Response ทั้งหมดจาก API ---
         console.log(
@@ -119,14 +119,14 @@ const UpdateDataInfo = () => {
         return;
       }
 
-      // เรียกใช้ updateEmployee จาก employee.jsx
-      await updateEmployee(id, values, token);
+      // เรียกใช้ UpdateEmployee จาก employee.jsx
+      await UpdateEmployee(id, values, token);
 
       message.success("อัปเดตข้อมูลสำเร็จ");
       navigate(`/datauser`); // กลับไปหน้าแสดงข้อมูล
     } catch (error) {
       console.error(
-        "[UpdateDataInfo] Error in onFinish (updateEmployee):",
+        "[UpdateDataInfo] Error in onFinish (UpdateEmployee):",
         error
       );
       const errorMessage =

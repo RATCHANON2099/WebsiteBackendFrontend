@@ -1,3 +1,5 @@
+// models/employee.js
+//alreadydone
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
 const { User } = require("../models/user");

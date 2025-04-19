@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, message, Layout } from "antd";
 import { useNavigate } from "react-router-dom";
-import { createEmployee } from "../../functions/employee";
+import { AddEmployee } from "../../functions/employee";
 
 const FormUser = () => {
   const [form] = Form.useForm();
@@ -33,7 +33,7 @@ const FormUser = () => {
         userId: userId,
       };
 
-      await createEmployee(dataToSend, token);
+      await AddEmployee(dataToSend, token);
 
       message.success("บันทึกข้อมูลสำเร็จ");
       form.resetFields();

@@ -1,20 +1,64 @@
 // Controllers/employee.js
-const { Employee } = require("../models/employee"); // ตรวจสอบว่า import Model ถูกต้อง
+//notdone
+const { Employee } = require("../models/employee");
 
-// --- Controller ใหม่/แก้ไข สำหรับ GET /employee/:id ---
-// ใช้หาข้อมูล Employee ด้วย ID ที่ระบุใน URL params
-exports.getEmployeeById = async (req, res) => {
-  // ตั้งชื่อใหม่ให้ชัดเจน (หรือใช้ชื่อเดิมแต่แก้ Logic)
+//ใช้สำหรับหา Data ที่มี userId ตรงกับ id ผู้ใช้
+//ใช้ตรวจสอบค้นหา Data ใน Table employees ว่า Data อันไหนมี userId ตรงกับ id ที่ล็อคอินอยู่
+//findAll หาข้อมูลทั้งหมดในตาราง โดยสามารถกำหนดเงื่อนไขได้
+exports.FindDataEmployeeByUserId = async (req, res) => {
   try {
-    const employee = await Employee.findByPk(req.params.id); // *** หาด้วย Primary Key (id ที่ส่งมา) ***
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "Authentication required." });
+    }
+
+    console.log("--- FindDataEmployeeByUserId ---");
+    console.log("User ID from token (req.user.id):", req.user.id);
+    console.log("Type of req.user.id:", typeof req.user.id); // ดูชนิดข้อมูลด้วย
+
+    const employees = await Employee.findAll({
+      where: { userId: req.user.id },
+    });
+
+    res.json(employees); // คืนค่า Object เดียว
+  } catch (err) {
+    console.error("Error fetching employee data for current user:", err);
+    res.status(500).send("Server Error");
+  }
+};
+
+// สำหรับเพิ่มข้อมูลใน Table employees โดยมีการผูกให้ userId ตรงกับ id ของผู้ที่กรอกข้อมูล
+exports.AddEmployee = async (req, res) => {
+  try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "Authentication required." });
+    }
+
+    const newEmployee = await Employee.create({
+      ...req.body,
+      userId: req.user.id, // *** ผูกกับ User ที่ Login *** หรือก็คือ userId นี้จะมีค่าเท่ากับ id ของ user เพื่อรู้ได้ว่าใครเป็นคนกรอกข้อมูล
+    });
+
+    res.status(201).json(newEmployee);
+  } catch (err) {
+    console.error("Error adding employee:", err);
+    res.status(500).send("Server Error");
+  }
+};
+
+//สำหรับ Edit ข้อมูล
+//หาข้อมูลของ employee ใน table จาก id ที่รับเข้ามาจากหน้าบ้าน แล้วเอามาเก็บไว้ในตัวแปร employee
+//ซึ่งในตาราง employee id ไม่ซ้ำกันอยู่แล้ว ก็จะได้มาแค่ข้อมูลแถวเดียวในตาราง
+//เวลาใช้ก็ต้องรับ id มาเพื่อใช้ค้นหา
+//findByPk ต้องรับมาโดยตรงเพื่อตรวจสอบเพราะใส่เงื่อนไขไม่ได้
+exports.GetDataEmployeeById = async (req, res) => {
+  try {
+    const employee = await Employee.findByPk(req.params.id);
 
     if (!employee) {
+      //ถ้าไม่ใช่ employee
       return res.status(404).json({ message: "Employee not found." });
     }
-    // (แนะนำ) เพิ่มการตรวจสอบสิทธิ์ตรงนี้ ถ้าจำเป็น
-    // if (employee.userId !== req.user.id && req.user.role !== 'admin') {
-    //    return res.status(403).json({ message: "Forbidden" });
-    // }
+
     res.json(employee); // *** คืนค่า Object เดียว ***
   } catch (err) {
     console.error("Error fetching employee by ID:", err);
@@ -27,53 +71,18 @@ exports.getEmployeeById = async (req, res) => {
   }
 };
 
-//เอาไว้ใช้กับปุ่ม Edit คือหาข้อมูลเดียว ที่ userId ตรงกับ id ที่กด
-exports.getDataEmployee = async (req, res) => {
-  try {
-    const employee = await Employee.findOne({ where: { userId: req.user.id } });
-    if (!employee) {
-      // คืน 404 ถ้าไม่เจอข้อมูล หรือคืน null ก็ได้
-      return res
-        .status(404)
-        .json({ message: "Employee data not found for this user." });
-      // return res.json(null);
-    }
-    res.json(employee); // คืนค่า Object เดียว
-  } catch (err) {
-    console.error("Error fetching employee data for current user:", err);
-    res.status(500).send("Server Error");
-  }
-};
-
-// --- แก้ไข Controller addEmployee ให้ผูก userId ---
-exports.addEmployee = async (req, res) => {
-  try {
-    if (!req.user || !req.user.id) {
-      return res.status(401).json({ message: "Authentication required." });
-    }
-    const newEmployee = await Employee.create({
-      ...req.body,
-      userId: req.user.id, // *** ผูกกับ User ที่ Login ***
-    });
-    res.status(201).json(newEmployee);
-  } catch (err) {
-    console.error("Error adding employee:", err);
-    res.status(500).send("Server Error");
-  }
-};
-
-// --- แก้ไข Controller updateEmployee ให้รับ Field ถูกต้อง ---
-exports.updateEmployee = async (req, res) => {
+// ใช้บันทึกข้อมูลใหม่ลงในตาราง
+exports.UpdateEmployee = async (req, res) => {
   try {
     const { id } = req.params;
-    // *** รับค่าให้ตรงกับ Frontend ***
-    const { name, email, age, phone_number, id_number } = req.body;
     const employee = await Employee.findByPk(id);
+
     if (!employee) {
       return res.status(404).send("Employee not found");
     }
-    // *** (แนะนำ) เพิ่มการตรวจสอบสิทธิ์ ***
-    // if (employee.userId !== req.user.id) { return res.status(403).send("Forbidden"); }
+
+    // *** รับค่าให้ตรงกับ Frontend ***
+    const { name, email, age, phone_number, id_number } = req.body;
 
     employee.email = email !== undefined ? email : employee.email; // อัปเดตถ้ามีค่าส่งมา
     employee.name = name !== undefined ? name : employee.name;
@@ -82,7 +91,7 @@ exports.updateEmployee = async (req, res) => {
       phone_number !== undefined ? phone_number : employee.phone_number;
     employee.id_number =
       id_number !== undefined ? id_number : employee.id_number;
-    await employee.save();
+    await employee.save(); // บันทึกข้อมูลลงใน employee
     res.status(200).json(employee);
   } catch (err) {
     console.error("Error updating employee:", err);
@@ -91,15 +100,15 @@ exports.updateEmployee = async (req, res) => {
 };
 
 // --- Controller deleteEmployee (เพิ่มการเช็คสิทธิ์) ---
-exports.deleteEmployee = async (req, res) => {
+exports.DeleteEmployee = async (req, res) => {
   try {
     const { id } = req.params;
     const employee = await Employee.findByPk(id);
+
     if (!employee) {
       return res.status(404).send("Employee not found");
     }
-    // *** (แนะนำ) เพิ่มการตรวจสอบสิทธิ์ ***
-    // if (employee.userId !== req.user.id) { return res.status(403).send("Forbidden"); }
+
     await employee.destroy();
     res.status(200).send("Employee deleted successfully");
   } catch (err) {

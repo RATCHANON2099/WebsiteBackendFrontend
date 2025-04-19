@@ -3,7 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Space, message, Spin } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 // *** Import ฟังก์ชันที่ถูกต้อง ***
-import { deleteEmployee, getAllEmployees } from "../../functions/employee";
+import {
+  DeleteEmployee,
+  FindDataEmployeeByUserId,
+} from "../../functions/employee";
 // ไม่ต้องใช้ axios โดยตรงแล้ว
 
 const DataUser = () => {
@@ -28,7 +31,7 @@ const DataUser = () => {
 
     try {
       // *** เรียกใช้ฟังก์ชันใหม่เพื่อดึง Array ข้อมูลทั้งหมด ***
-      const res = await getAllEmployees(token);
+      const res = await FindDataEmployeeByUserId(token);
 
       console.log(
         "Data from /api/employee/my-list (should be array):",
@@ -85,7 +88,7 @@ const DataUser = () => {
     }
     try {
       setLoading(true);
-      await deleteEmployee(employeeId, token);
+      await DeleteEmployee(employeeId, token);
       message.success("ลบข้อมูลสำเร็จ");
       // *** โหลดข้อมูลใหม่หลังลบ ***
       fetchData(); // เรียก fetchData() เพื่อโหลดข้อมูลล่าสุด
