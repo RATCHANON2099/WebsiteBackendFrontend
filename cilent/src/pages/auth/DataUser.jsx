@@ -7,6 +7,7 @@ import deleteEffect from "../../components/DeleteEffect";
 import {
   DeleteEmployee,
   FindDataEmployeeByUserId,
+  GetAllMyEmployees,
 } from "../../functions/employee";
 // ไม่ต้องใช้ axios โดยตรงแล้ว
 
@@ -14,9 +15,8 @@ const DataUser = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]); // เริ่มต้นเป็น array ว่าง
   const [loading, setLoading] = useState(true);
-  // --- ลบ userHasInfo ออก ---
-  // const [userHasInfo, setUserHasInfo] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const userRole = user?.role; // ตรวจสอบชื่อ property 'role' ให้ถูกต้อง
   const userId = user?.id;
 
   // --- ฟังก์ชันโหลดข้อมูล (แยกออกมาเพื่อเรียกซ้ำได้) ---
@@ -31,28 +31,39 @@ const DataUser = () => {
     }
 
     try {
-      // *** เรียกใช้ฟังก์ชันใหม่เพื่อดึง Array ข้อมูลทั้งหมด ***
-      const res = await FindDataEmployeeByUserId(token);
+      let res; // ประกาศตัวแปรสำหรับเก็บ response
 
-      console.log(
-        "Data from /api/employee/my-list (should be array):",
-        res.data
-      );
+      // ***** 2. แก้ไขส่วนนี้: เพิ่มเงื่อนไขตรวจสอบ Role *****
+      if (userRole === "admin") {
+        // ตรวจสอบค่า 'admin' ให้ถูกต้อง
+        console.log("[DataUser] User is admin. Calling GetAllMyEmployees.");
+        // เรียก API ดึงข้อมูลทั้งหมดสำหรับ Admin
+        res = await GetAllMyEmployees(token);
+      } else {
+        console.log(
+          "[DataUser] User is not admin. Calling FindDataEmployeeByUserId."
+        );
+        // เรียก API ดึงข้อมูลเฉพาะของ User ปัจจุบัน
+        res = await FindDataEmployeeByUserId(token);
+      }
+      // ****************************************************
 
-      // --- ตั้งค่า State ด้วย Array ที่ได้มาโดยตรง ---
+      // Log ข้อมูลที่ได้รับ (ปรับ Log message ให้ทั่วไป)
+      console.log("Data received from API:", res.data);
+
+      // --- ตั้งค่า State ด้วย Array ที่ได้มาโดยตรง (เหมือนเดิม) ---
       if (Array.isArray(res.data)) {
-        setData(res.data); // *** ใช้ res.data โดยตรง ***
+        setData(res.data);
       } else {
         console.error(
-          "Expected an array from getAllMyEmployees, but received:",
+          "Expected an array from API, but received:", // ปรับ Log message
           res.data
         );
-        setData([]); // ตั้งเป็น Array ว่างถ้าข้อมูลไม่ถูกต้อง
+        setData([]);
       }
-      // --- ไม่ต้องใช้ userHasInfo แล้ว ---
     } catch (error) {
       console.error("Error fetching employee list:", error);
-      // ... (Error handling) ...
+      // ... (Error handling เหมือนเดิม) ...
       if (error.response) {
         if (error.response.status === 401 || error.response.status === 403) {
           message.error(
@@ -69,7 +80,7 @@ const DataUser = () => {
       } else {
         message.error("เกิดข้อผิดพลาดในการเชื่อมต่อ หรือการร้องขอข้อมูล");
       }
-      setData([]); // เคลียร์ข้อมูลเมื่อเกิด error
+      setData([]);
     } finally {
       setLoading(false);
     }

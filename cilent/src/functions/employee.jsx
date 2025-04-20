@@ -4,6 +4,17 @@ import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 
 // ใช้ดึงข้อมูลทั้งหมดของ Employee
+export const GetAllMyEmployees = async (token) => {
+  // ควรส่ง token ไปด้วยถ้า endpoint ต้องการ
+  return await axios.get(`${API_URL}/employee/all`, {
+    // เปลี่ยน API เป็น API_URL
+    headers: {
+      Authorization: `Bearer ${token}`, // เพิ่ม header ถ้าจำเป็น
+    },
+  });
+};
+
+// ใช้ดึงข้อมูลทั้งหมดของ Employee ที่ userId ตรงกับ id ผู้ล็อคอิน
 export const FindDataEmployeeByUserId = async (token) => {
   // ควรส่ง token ไปด้วยถ้า endpoint ต้องการ
   return await axios.get(`${API_URL}/employee`, {
