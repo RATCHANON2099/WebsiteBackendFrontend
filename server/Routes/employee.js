@@ -9,7 +9,11 @@ const {
   UpdateEmployee,
   DeleteEmployee,
   FindDataEmployeeByUserId,
+  GetAllEmployee,
 } = require("../Controllers/employee");
+
+// ใช้สำหรับดึงข้อมูลทั้งหมดใน employee table
+router.get("/employee/all", auth, GetAllEmployee);
 
 // ใช้สำรหับหาข้อมูลทั้งหมดที่ userId ตรงกับ id ของผู้ที่ล็อคอิน
 // ไม่ต้องรับ id มาโดยตรง เพราะในฟังก์ชั่นดู id จาก Token ที่มากับ auth

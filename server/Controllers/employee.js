@@ -2,6 +2,38 @@
 //notdone
 const { Employee } = require("../models/employee");
 
+exports.GetAllEmployee = async (req, res) => {
+  // *** เพิ่ม Log เพื่อดู req.user ที่ Middleware ส่งมา ***
+  console.log("--- Controller GetAllEmployee ---");
+  console.log("Value of req.user:", req.user); // <--- Log สำคัญ! ดูว่ามี { id: ..., email: ..., role: 'admin' } หรือไม่
+
+  try {
+    // การตรวจสอบสิทธิ์
+    // ใช้ Optional Chaining (?.) เพื่อป้องกัน Error ถ้า req.user ไม่มีอยู่
+    if (!req.user || req.user.role !== "admin") {
+      // ตรวจสอบค่า 'admin' ให้ตรง (ตัวพิมพ์เล็ก)
+      console.log("Access Denied. Value causing denial:", {
+        userExists: !!req.user,
+        roleValue: req.user?.role,
+      }); // Log ค่าที่ทำให้เข้าเงื่อนไขนี้
+      return res
+        .status(403)
+        .json({ message: "Forbidden: Admin access required." });
+    }
+
+    // ถ้าเป็น Admin, ดำเนินการดึงข้อมูลทั้งหมด
+    console.log(
+      "[GetAllEmployee] Admin access granted. Fetching all employees."
+    );
+    const employees = await Employee.findAll(); // ดึงข้อมูลทั้งหมดจากตาราง Employee
+    res.json(employees); // ส่งข้อมูลทั้งหมดกลับไปเป็น JSON array
+  } catch (err) {
+    console.error("Error fetching all employees:", err);
+    res.status(500).send("Server Error"); // ตอบกลับเป็นข้อผิดพลาดของเซิร์ฟเวอร์
+  }
+  console.log("-----------------------------"); // เพิ่ม Log ตอนจบเพื่อแยก Request
+};
+
 //ใช้สำหรับหา Data ที่มี userId ตรงกับ id ผู้ใช้
 //ใช้ตรวจสอบค้นหา Data ใน Table employees ว่า Data อันไหนมี userId ตรงกับ id ที่ล็อคอินอยู่
 //findAll หาข้อมูลทั้งหมดในตาราง โดยสามารถกำหนดเงื่อนไขได้

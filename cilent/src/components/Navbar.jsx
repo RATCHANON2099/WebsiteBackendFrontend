@@ -1,5 +1,7 @@
+// src/components/Navbar.jsx
 import React from "react";
-import { Menu } from "antd";
+// *** 1. Import message จาก antd (ถ้าต้องการแสดงข้อความ) ***
+import { Menu, message } from "antd";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { DownOutlined } from "@ant-design/icons";
 import logo from "../assets/logo.png";
@@ -12,8 +14,30 @@ const Navbar = () => {
 
   // ดึงข้อมูล user จาก localStorage
   const user = JSON.parse(localStorage.getItem("user"));
-
   const userName = user?.name?.trim() || "USER";
+
+  // *** 2. สร้างฟังก์ชัน handleLogout ***
+  const handleLogout = () => {
+    console.log("Logging out...");
+    // ลบ token และ user ออกจาก localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    // แสดงข้อความ (Optional)
+    message.success("ออกจากระบบสำเร็จ");
+    // พาผู้ใช้กลับไปหน้า Login
+    navigate("/login");
+    // อาจจะ reload หน้าเพื่อให้ state อื่นๆ reset (ถ้าจำเป็น)
+    // window.location.reload();
+  };
+
+  // *** 3. ฟังก์ชันจัดการการคลิกเมนูหลัก (แยกส่วน Logout ออก) ***
+  const handleMenuClick = (e) => {
+    // ถ้า key ไม่ใช่ 'logout' ให้ navigate ตามปกติ
+    if (e.key !== "logout") {
+      navigate(e.key);
+    }
+    // ถ้า key เป็น 'logout' จะถูกจัดการโดย onClick ของ Menu.Item เอง
+  };
 
   return (
     <div
@@ -45,7 +69,8 @@ const Navbar = () => {
       <Menu
         mode="horizontal"
         selectedKeys={[selectedKey]}
-        onClick={(e) => navigate(e.key)}
+        // *** 4. ใช้ handleMenuClick แทน navigate โดยตรง ***
+        onClick={handleMenuClick}
         theme="dark"
         style={{
           backgroundColor: "transparent",
@@ -67,7 +92,12 @@ const Navbar = () => {
           }
         >
           <Menu.Item key="/datauser">Data</Menu.Item>
-          <Menu.Item key="/login">Logout</Menu.Item>
+          {/* *** 5. แก้ไข Menu.Item ของ Logout *** */}
+          <Menu.Item key="logout" onClick={handleLogout}>
+            {" "}
+            {/* เปลี่ยน key และเพิ่ม onClick */}
+            Logout
+          </Menu.Item>
         </SubMenu>
       </Menu>
     </div>
