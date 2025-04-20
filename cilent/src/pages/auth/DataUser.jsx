@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Space, message, Spin } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import deleteEffect from "../../components/DeleteEffect";
 // *** Import ฟังก์ชันที่ถูกต้อง ***
 import {
   DeleteEmployee,
@@ -84,21 +85,34 @@ const DataUser = () => {
   const handleEmployeeRemove = async (employeeId) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      /* ... */ return;
+      message.error("กรุณาเข้าสู่ระบบก่อน");
+      navigate("/login"); // หรือแค่ return ถ้ามีการตรวจสอบ login ที่อื่นแล้ว
+      return;
     }
-    try {
-      setLoading(true);
-      await DeleteEmployee(employeeId, token);
-      message.success("ลบข้อมูลสำเร็จ");
-      // *** โหลดข้อมูลใหม่หลังลบ ***
-      fetchData(); // เรียก fetchData() เพื่อโหลดข้อมูลล่าสุด
-    } catch (error) {
-      console.error("Error deleting employee:", error);
-      const errorMsg =
-        error.response?.data?.message || "เกิดข้อผิดพลาดในการลบข้อมูล";
-      message.error(errorMsg);
-    } finally {
-      setLoading(false);
+    // --- เรียกใช้ deleteEffect และรอผลลัพธ์ ---
+    const isConfirmed = await deleteEffect(); // รอให้ผู้ใช้กด Yes หรือ Cancel
+
+    // --- ทำการลบเฉพาะเมื่อผู้ใช้ยืนยัน (isConfirmed เป็น true) ---
+    if (isConfirmed) {
+      try {
+        setLoading(true); // เริ่ม loading หลังจากยืนยัน
+        await DeleteEmployee(employeeId, token);
+        message.success("ลบข้อมูลสำเร็จ");
+        // โหลดข้อมูลใหม่หลังลบสำเร็จ
+        fetchData(); // เรียก fetchData() เพื่อโหลดข้อมูลล่าสุด
+      } catch (error) {
+        console.error("Error deleting employee:", error);
+        const errorMsg =
+          error.response?.data?.message || "เกิดข้อผิดพลาดในการลบข้อมูล";
+        message.error(errorMsg);
+        // ไม่ต้อง fetchData() ถ้าลบไม่สำเร็จ
+      } finally {
+        setLoading(false); // หยุด loading ไม่ว่าจะสำเร็จหรือล้มเหลว
+      }
+    } else {
+      // (Optional) ถ้าต้องการแจ้งเตือนว่ายกเลิก
+      // message.info("การลบถูกยกเลิก");
+      console.log("Deletion cancelled by user.");
     }
   };
 
