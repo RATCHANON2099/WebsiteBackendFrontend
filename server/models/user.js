@@ -1,26 +1,43 @@
-const { DataTypes } = require("sequelize"); //นำเข้า DataTypes จาก sequelize
-const { sequelize } = require("../config/db"); //นำเข้า sequelize จาก config/db.js
+// models/user.js
+const { DataTypes } = require("sequelize");
+// const { sequelize } = require("../config/db"); // ไม่ต้อง import sequelize โดยตรงถ้าใช้ index.js
 
-const User = sequelize.define(
-  //defrne คำสั่งสร้าง table ใน database
-  "users",
-  {
-    //ตั้งชื่อ table ว่า user โดยแทนไว้ใน User เพื่อเอาไปเรียกใช้
-    email: {
-      type: DataTypes.STRING, //กำหนด type ของ column email เป็น string
-      allowNull: false, //กำหนดว่า column email ไม่สามารถเป็น null ได้
+// *** เปลี่ยนรูปแบบการ export ให้รับ sequelize และ DataTypes ***
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define(
+    "User", // <<< ใช้ชื่อ Model เป็นตัวพิมพ์ใหญ่ตัวแรก (Convention)
+    {
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true, // <<< ควรเพิ่ม unique constraint
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "employee",
+      },
     },
-    password: {
-      type: DataTypes.STRING, //กำหนด type ของ column password เป็น string
-      allowNull: false, //กำหนดว่า column password ไม่สามารถเป็น null ได้
-    },
-    role: {
-      type: DataTypes.STRING, //กำหนด type ของ column role เป็น string
-      allowNull: false, //กำหนดว่า column role ไม่สามารถเป็น null ได้
-      defaultValue: "employee", //กำหนด role เป็น employee เป็นค่าเริ่มต้นเมื่อสมัครเสร็จ
-    },
-  },
-  {}
-);
+    {
+      tableName: "users", // <<< ระบุชื่อตารางให้ชัดเจน
+      timestamps: true, // <<< เปิดใช้งาน createdAt/updatedAt (ถ้าต้องการ)
+    }
+  );
 
-module.exports = { User };
+  // *** เพิ่มเมธอด associate ***
+  User.associate = (models) => {
+    // User หนึ่งคน มี RefreshToken ได้หลายอัน
+    User.hasMany(models.RefreshToken, {
+      // ใช้ models.RefreshToken ที่ส่งเข้ามา
+      foreignKey: "userId", // Foreign key ในตาราง RefreshToken
+      as: "refreshTokens", // <<< Alias ที่ถูกต้องสำหรับฝั่ง User
+    });
+    // หากมี association อื่นๆ ก็ใส่เพิ่มตรงนี้
+  };
+
+  return User; // คืนค่า Model ที่ define แล้ว
+};

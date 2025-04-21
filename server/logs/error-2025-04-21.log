@@ -1,0 +1,120 @@
+2025-04-21 10:58:10 error: Error loading models: Error: Cannot find module 'C:\project2\server\models/../config/config.json'
+Require stack:
+- C:\project2\server\models\index.js
+- C:\project2\server\server.js
+2025-04-21 11:05:25 error: SequelizeAssociationError: You have used the alias refreshTokens in two separate associations. Aliased associations must have unique aliases.
+    at new Association (C:\project2\server\node_modules\sequelize\lib\associations\base.js:13:13)
+    at new HasMany (C:\project2\server\node_modules\sequelize\lib\associations\has-many.js:28:5)
+    at users.hasMany (C:\project2\server\node_modules\sequelize\lib\associations\mixin.js:22:25)
+    at Object.<anonymous> (C:\project2\server\models\refreshToken.js:43:6)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+2025-04-21 11:11:28 error: SequelizeAssociationError: You have used the alias refreshTokens in two separate associations. Aliased associations must have unique aliases.
+    at new Association (C:\project2\server\node_modules\sequelize\lib\associations\base.js:13:13)
+    at new HasMany (C:\project2\server\node_modules\sequelize\lib\associations\has-many.js:28:5)
+    at users.hasMany (C:\project2\server\node_modules\sequelize\lib\associations\mixin.js:22:25)
+    at Object.<anonymous> (C:\project2\server\models\refreshToken.js:43:6)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+2025-04-21 11:36:19 error: Error loading models: SequelizeAssociationError: You have used the alias refreshTokens in two separate associations. Aliased associations must have unique aliases.
+2025-04-21 11:39:02 error: Error loading models: SequelizeAssociationError: You have used the alias refreshTokens in two separate associations. Aliased associations must have unique aliases.
+2025-04-21 11:41:31 error: Error loading models: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+2025-04-21 11:41:31 error: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+    at employee.<anonymous> (C:\project2\server\node_modules\sequelize\lib\associations\mixin.js:63:13)
+    at Object.<anonymous> (C:\project2\server\models\employee.js:34:10)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Module.require (node:internal/modules/cjs/loader:1311:12)
+    at require (node:internal/modules/helpers:136:16)
+2025-04-21 11:42:54 error: Error loading models: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+2025-04-21 11:42:54 error: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+    at employee.<anonymous> (C:\project2\server\node_modules\sequelize\lib\associations\mixin.js:63:13)
+    at Object.<anonymous> (C:\project2\server\models\employee.js:34:10)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Module.require (node:internal/modules/cjs/loader:1311:12)
+    at require (node:internal/modules/helpers:136:16)
+2025-04-21 11:44:24 error: Error loading models: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+2025-04-21 11:44:24 error: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+    at employee.<anonymous> (C:\project2\server\node_modules\sequelize\lib\associations\mixin.js:63:13)
+    at Object.<anonymous> (C:\project2\server\models\employee.js:34:10)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Module.require (node:internal/modules/cjs/loader:1311:12)
+    at require (node:internal/modules/helpers:136:16)
+2025-04-21 11:44:52 error: Error loading models: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+2025-04-21 11:44:52 error: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+    at employee.<anonymous> (C:\project2\server\node_modules\sequelize\lib\associations\mixin.js:63:13)
+    at Object.<anonymous> (C:\project2\server\models\employee.js:34:10)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Module.require (node:internal/modules/cjs/loader:1311:12)
+    at require (node:internal/modules/helpers:136:16)
+2025-04-21 11:44:57 error: Error loading models: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+2025-04-21 11:44:57 error: Error: employee.belongsTo called with something that's not a subclass of Sequelize.Model
+    at employee.<anonymous> (C:\project2\server\node_modules\sequelize\lib\associations\mixin.js:63:13)
+    at Object.<anonymous> (C:\project2\server\models\employee.js:34:10)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Module.require (node:internal/modules/cjs/loader:1311:12)
+    at require (node:internal/modules/helpers:136:16)
+2025-04-21 12:03:05 error: Error
+    at Query.run (C:\project2\server\node_modules\sequelize\lib\dialects\mariadb\query.js:53:25)
+    at C:\project2\server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\project2\server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async User.findAll (C:\project2\server\node_modules\sequelize\lib\model.js:1140:21)
+    at async User.findOne (C:\project2\server\node_modules\sequelize\lib\model.js:1240:12)
+    at async exports.login (C:\project2\server\Controllers\auth.js:42:18)
+2025-04-21 12:03:05 error: Error
+    at Query.run (C:\project2\server\node_modules\sequelize\lib\dialects\mariadb\query.js:53:25)
+    at C:\project2\server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\project2\server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async User.findAll (C:\project2\server\node_modules\sequelize\lib\model.js:1140:21)
+    at async User.findOne (C:\project2\server\node_modules\sequelize\lib\model.js:1240:12)
+    at async exports.login (C:\project2\server\Controllers\auth.js:42:18)
+2025-04-21 12:03:27 error: Error
+    at Query.run (C:\project2\server\node_modules\sequelize\lib\dialects\mariadb\query.js:53:25)
+    at C:\project2\server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\project2\server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async User.findAll (C:\project2\server\node_modules\sequelize\lib\model.js:1140:21)
+    at async User.findOne (C:\project2\server\node_modules\sequelize\lib\model.js:1240:12)
+    at async exports.login (C:\project2\server\Controllers\auth.js:42:18)
+2025-04-21 12:03:27 error: Error
+    at Query.run (C:\project2\server\node_modules\sequelize\lib\dialects\mariadb\query.js:53:25)
+    at C:\project2\server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\project2\server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async User.findAll (C:\project2\server\node_modules\sequelize\lib\model.js:1140:21)
+    at async User.findOne (C:\project2\server\node_modules\sequelize\lib\model.js:1240:12)
+    at async exports.login (C:\project2\server\Controllers\auth.js:42:18)
