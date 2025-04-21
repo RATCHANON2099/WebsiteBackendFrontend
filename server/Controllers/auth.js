@@ -64,7 +64,7 @@ exports.login = async (req, res, next) => {
     const accessToken = jwt.sign(
       accessTokenPayload,
       process.env.JWT_ACCESS_SECRET, // <<<--- อ่าน Secret จาก .env
-      { expiresIn: "11m" } // <<<--- ตั้งค่าอายุสั้น (เช่น 15 นาที)
+      { expiresIn: "10m" } // <<<--- ตั้งค่าอายุสั้น (เช่น 15 นาที)
     );
 
     // --- สร้าง Refresh Token (อายุยาว) ---
