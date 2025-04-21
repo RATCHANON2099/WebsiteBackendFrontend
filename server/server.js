@@ -83,18 +83,15 @@ app.use((req, res, next) => {
 });
 
 // --- รันเซิร์ฟเวอร์ ---
-// *** แก้ไข: ใช้ PORT จาก .env หรือ default เป็น 5000 ***
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.mariaDB_PORT;
 
 // รันเซิร์ฟเวอร์
-sequelize
-  .sync() // พิจารณาว่าจำเป็นต้อง sync ทุกครั้งหรือไม่ อาจใช้ migrations แทน
-  .then(() => {
-    // *** แก้ไข: ใช้ logger.info แทน console.log ***
-    app.listen(PORT, () => logger.info(`🚀 Server Running On Port ${PORT}`)); // <<<--- *** แก้ไขตรงนี้ ***
-  })
-  .catch((err) => {
-    // *** เพิ่ม: การจัดการ Error หาก sequelize.sync() ล้มเหลว ***
-    logger.error("Sequelize sync error:", err); // <<<--- *** เพิ่มตรงนี้ ***
-    process.exit(1); // ออกจากโปรแกรมถ้า sync ไม่สำเร็จ
-  });
+const server = app.listen(PORT, () => {
+  logger.info(`🚀 Server Running On Port ${PORT}`);
+});
+
+// เพิ่มการดักจับ error ของ app.listen (ถ้าต้องการ)
+server.on("error", (err) => {
+  logger.error("Server failed to start:", err);
+  process.exit(1);
+});
