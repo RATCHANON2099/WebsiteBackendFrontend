@@ -20,7 +20,7 @@ const Navbar = () => {
   const handleLogout = () => {
     console.log("Logging out...");
     // ลบ token และ user ออกจาก localStorage
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
     // แสดงข้อความ (Optional)
     message.success("ออกจากระบบสำเร็จ");
