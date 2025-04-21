@@ -3,23 +3,20 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, Button, message, Layout, Spin } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { UpdateEmployee, GetDataEmployeeById } from "../functions/employee";
-// *** 1. Import ConfirmEffect (หรือ deleteEffect ถ้าต้องการใช้ชื่อนั้น) ***
-import ConfirmEffect from "./ConfirmEffect"; // หรือ import deleteEffect from './DeleteEffect';
+import ConfirmEffect from "./ConfirmEffect";
 
 const UpdateDataInfo = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { id } = useParams();
   const { Content } = Layout;
-  // *** เปลี่ยนชื่อ state loading ให้ชัดเจนขึ้น (Optional แต่แนะนำ) ***
-  const [initialLoading, setInitialLoading] = useState(true); // สำหรับโหลดข้อมูลครั้งแรก
-  const [isUpdating, setIsUpdating] = useState(false); // สำหรับตอนกดปุ่มอัปเดต
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
-    console.log("[UpdateDataInfo] useEffect triggered. ID from params:", id);
-
     if (!localStorage.getItem("accessToken")) {
-      message.error("กรุณาเข้าสู่ระบบก่อน (No Token Found)");
+      // เปลี่ยนเป็นภาษาอังกฤษ
+      message.error("Please log in first (No Token Found)");
       navigate("/login");
       setInitialLoading(false);
       return;
@@ -27,93 +24,69 @@ const UpdateDataInfo = () => {
 
     const fetchEmployeeData = async () => {
       try {
-        console.log(
-          "[UpdateDataInfo] Calling GetDataEmployeeById with ID:",
-          id
-        );
         const res = await GetDataEmployeeById(id);
-        console.log("[UpdateDataInfo] API Response Data (res.data):", res.data);
         if (
           res.data &&
           typeof res.data === "object" &&
           !Array.isArray(res.data)
         ) {
-          console.log(
-            "[UpdateDataInfo] Data is valid object. Setting form values:",
-            res.data
-          );
           form.setFieldsValue(res.data);
-          console.log(
-            "[UpdateDataInfo] form.setFieldsValue called successfully."
-          );
         } else {
-          console.log(
-            "[UpdateDataInfo] API did not return a valid single object. res.data:",
-            res.data
-          );
-          message.error(
-            "ไม่พบข้อมูลพนักงานที่ต้องการแก้ไข หรือข้อมูลไม่ถูกต้อง"
-          );
+          // เปลี่ยนเป็นภาษาอังกฤษ
+          message.error("Employee data not found or invalid");
           navigate("/datauser");
         }
       } catch (error) {
-        console.error("[UpdateDataInfo] Error in fetchEmployeeData:", error);
-        message.error("เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน");
+        console.error("Error fetching employee data:", error); // แก้ไข log message
+        // เปลี่ยนเป็นภาษาอังกฤษ
+        message.error("Error fetching employee data");
         navigate("/datauser");
       } finally {
-        setInitialLoading(false); // หยุด loading ของข้อมูลครั้งแรก
+        setInitialLoading(false);
       }
     };
 
     if (id) {
       fetchEmployeeData();
     } else {
-      console.log("[UpdateDataInfo] No ID found in params.");
-      message.error("ไม่พบ ID ของข้อมูลที่ต้องการแก้ไข");
+      // เปลี่ยนเป็นภาษาอังกฤษ
+      message.error("ID for the record to be edited not found");
       setInitialLoading(false);
       navigate("/datauser");
     }
-  }, [id, navigate, form]);
+  }, [id, navigate, form]); // เพิ่ม form ใน dependency array
 
-  // *** 2. แก้ไข onFinish ให้เรียก ConfirmEffect ก่อน ***
   const onFinish = async (values) => {
-    console.log("[UpdateDataInfo] onFinish triggered with values:", values);
-
     if (!localStorage.getItem("accessToken")) {
-      message.error("Session หมดอายุ กรุณาเข้าสู่ระบบใหม่ (No Token Found)");
+      // เปลี่ยนเป็นภาษาอังกฤษ
+      message.error("Session expired. Please log in again (No Token Found)");
       navigate("/login");
       return;
     }
 
-    // --- เรียก ConfirmEffect และรอการยืนยัน ---
-    console.log("Before calling ConfirmEffect");
-    const isConfirmed = await ConfirmEffect(); // หรือ await deleteEffect();
-    console.log("After calling ConfirmEffect, isConfirmed:", isConfirmed);
+    const isConfirmed = await ConfirmEffect();
 
-    // --- ทำงานต่อเมื่อผู้ใช้ยืนยัน ---
     if (isConfirmed) {
-      setIsUpdating(true); // *** เริ่ม loading ของการอัปเดต ***
+      setIsUpdating(true);
       try {
-        // เรียกใช้ UpdateEmployee
         await UpdateEmployee(id, values);
-        message.success("อัปเดตข้อมูลสำเร็จ");
-        navigate(`/datauser`); // กลับไปหน้าแสดงข้อมูล
+        // เปลี่ยนเป็นภาษาอังกฤษ
+        message.success("Data updated successfully");
+        navigate(`/datauser`);
       } catch (error) {
-        console.error(
-          "[UpdateDataInfo] Error in onFinish (UpdateEmployee):",
-          error
-        );
+        console.error("Error updating employee data:", error); // แก้ไข log message
+        // เปลี่ยนเป็นภาษาอังกฤษ
         const errorMessage =
           error.response?.data?.message ||
           error.response?.data ||
-          "เกิดข้อผิดพลาดในการอัปเดตข้อมูล";
+          "An error occurred while updating data";
         message.error(errorMessage);
       } finally {
-        setIsUpdating(false); // *** หยุด loading ของการอัปเดต ***
+        setIsUpdating(false);
       }
     } else {
       console.log("Update cancelled by user.");
-      // message.info("การอัปเดตถูกยกเลิก"); // (Optional)
+      // message.info("Update cancelled"); // เปลี่ยน comment เป็นภาษาอังกฤษ
     }
   };
 
@@ -127,7 +100,6 @@ const UpdateDataInfo = () => {
           padding: "40px 20px",
         }}
       >
-        {/* *** Spin ใช้ initialLoading สำหรับโหลดข้อมูลครั้งแรก *** */}
         <Spin spinning={initialLoading}>
           <div
             style={{
@@ -139,7 +111,6 @@ const UpdateDataInfo = () => {
               boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
             }}
           >
-            {/* --- Header --- */}
             <div
               style={{
                 background: "#001529",
@@ -166,57 +137,58 @@ const UpdateDataInfo = () => {
               </h1>
             </div>
 
-            {/* --- Form --- */}
             <Form form={form} onFinish={onFinish} layout="vertical">
-              {/* ... (Form Items เหมือนเดิม) ... */}
+              {/* เปลี่ยน Label และ Placeholder */}
               <Form.Item
-                label="อีเมล (ติดต่อ)"
+                label="Contact Email"
                 name="email"
                 rules={[
-                  { required: true, message: "กรุณากรอก email" },
-                  { type: "email", message: "รูปแบบอีเมลไม่ถูกต้อง" },
+                  { required: true, message: "Please enter email" },
+                  { type: "email", message: "Invalid email format" }, // แก้ message
                 ]}
               >
                 <Input placeholder="example@email.com" />
               </Form.Item>
               <Form.Item
-                label="ชื่อ-นามสกุล"
+                label="Full Name"
                 name="name"
-                rules={[{ required: true, message: "กรุณากรอกชื่อ-นามสกุล" }]}
+                rules={[{ required: true, message: "Please enter name" }]} // แก้ message
               >
-                <Input placeholder="กรอกชื่อ-นามสกุล" />
+                <Input placeholder="Enter full name" />
               </Form.Item>
               <Form.Item
-                label="อายุ"
+                label="Age"
                 name="age"
-                rules={[{ required: true, message: "กรุณากรอกอายุ" }]}
+                rules={[{ required: true, message: "Please enter age" }]} // แก้ message
               >
-                <Input placeholder="กรอกอายุ" type="number" />
+                <Input placeholder="Enter age" type="number" />
               </Form.Item>
               <Form.Item
-                label="เบอร์โทรศัพท์"
+                label="Phone Number"
                 name="phone_number"
-                rules={[{ required: true, message: "กรุณากรอกเบอร์โทร" }]}
+                rules={[
+                  { required: true, message: "Please enter phone number" },
+                ]} // แก้ message
               >
-                <Input placeholder="กรอกเบอร์โทรศัพท์" />
+                <Input placeholder="Enter phone number" />
               </Form.Item>
               <Form.Item
-                label="เลขบัตรประชาชน"
+                label="ID Number"
                 name="id_number"
-                rules={[{ required: true, message: "กรุณากรอกเลขบัตรประชาชน" }]}
+                rules={[{ required: true, message: "Please enter ID number" }]} // แก้ message
               >
-                <Input placeholder="กรอกเลขบัตรประชาชน" />
+                <Input placeholder="Enter ID number" />
               </Form.Item>
               <Form.Item>
+                {/* เปลี่ยนข้อความปุ่ม */}
                 <Button
                   type="primary"
                   htmlType="submit"
                   block
                   style={{ fontSize: "16px", height: "40px" }}
-                  // *** 3. ปุ่มใช้ isUpdating สำหรับ loading ***
                   loading={isUpdating}
                 >
-                  อัปเดตข้อมูล
+                  Update Data
                 </Button>
               </Form.Item>
             </Form>

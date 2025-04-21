@@ -16,14 +16,17 @@ const FormUser = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
-      message.error("กรุณาเข้าสู่ระบบก่อน");
+      // เปลี่ยนเป็นภาษาอังกฤษ
+      message.error("Please log in first");
       navigate("/login");
     }
-  }, []);
+    // เพิ่ม dependency array ว่างเพื่อให้ useEffect ทำงานครั้งเดียวตอน mount
+  }, [navigate]); // เพิ่ม navigate ใน dependency array
 
   const onFinish = async (values) => {
     if (!localStorage.getItem("accessToken")) {
-      message.error("Session หมดอายุ กรุณาเข้าสู่ระบบใหม่ (No Token Found)");
+      // เปลี่ยนเป็นภาษาอังกฤษ
+      message.error("Session expired. Please log in again (No Token Found)");
       navigate("/login");
       return;
     }
@@ -32,34 +35,34 @@ const FormUser = () => {
     console.log("Confirmation result:", isConfirmed);
 
     if (isConfirmed) {
-      // VVV ย้าย try...catch...finally เข้ามาในนี้ VVV
-      setIsSubmitting(true); // เริ่ม Loading
+      setIsSubmitting(true);
 
       try {
         if (!userId) {
-          // ควรจะเช็ค userId ก่อน Confirm หรือไม่? พิจารณาตาม Flow ที่ต้องการ
-          message.error("ไม่พบข้อมูลผู้ใช้ กรุณาลองเข้าสู่ระบบใหม่");
+          // เปลี่ยนเป็นภาษาอังกฤษ
+          message.error("User data not found. Please try logging in again");
           navigate("/login");
-          setIsSubmitting(false); // หยุด Loading ถ้า Error ก่อนเรียก API
-          return;
+          // ไม่ต้อง setIsSubmitting(false) ที่นี่ เพราะ finally จะทำให้อยู่แล้ว
+          return; // ออกจาก function ถ้าไม่มี userId
         }
 
         const dataToSend = {
           ...values,
-          // userId: userId, // ไม่ต้องส่ง ถ้า Backend ดึงจาก req.user.id
         };
 
-        await AddEmployee(dataToSend); // เรียก API
+        await AddEmployee(dataToSend);
 
-        message.success("บันทึกข้อมูลสำเร็จ");
+        // เปลี่ยนเป็นภาษาอังกฤษ
+        message.success("Data saved successfully");
         form.resetFields();
         navigate(`/datauser`);
       } catch (error) {
-        console.error("เกิดข้อผิดพลาดในการสร้างข้อมูลพนักงาน:", error);
+        console.error("Error creating employee data:", error); // แก้ไข log message
+        // เปลี่ยน default error message เป็นภาษาอังกฤษ
         const errorMessage =
           error.response?.data?.message ||
           error.response?.data ||
-          "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
+          "An error occurred while saving data";
         message.error(errorMessage);
         if (
           error.response &&
@@ -68,12 +71,11 @@ const FormUser = () => {
           navigate("/login");
         }
       } finally {
-        setIsSubmitting(false); // หยุด Loading เสมอ ไม่ว่าจะสำเร็จหรือล้มเหลว
+        setIsSubmitting(false);
       }
-      // --- สิ้นสุดส่วนที่ย้ายเข้ามา ---
     } else {
       console.log("Submission cancelled by user.");
-      // message.info("การบันทึกถูกยกเลิก"); // Optional
+      // message.info("Save operation cancelled"); // เปลี่ยน comment เป็นภาษาอังกฤษ
     }
   };
 
@@ -123,47 +125,50 @@ const FormUser = () => {
           </div>
 
           <Form form={form} onFinish={onFinish} layout="vertical">
+            {/* เปลี่ยน Label และ Placeholder */}
             <Form.Item
-              label="อีเมล (ติดต่อ)"
+              label="Contact Email"
               name="email"
-              rules={[{ required: true, message: "กรุณากรอก email" }]}
+              rules={[{ required: true, message: "Please enter email" }]} // แก้ message
             >
               <Input placeholder="example@email.com" />
             </Form.Item>
 
             <Form.Item
-              label="ชื่อ-นามสกุล"
+              label="Full Name"
               name="name"
-              rules={[{ required: true, message: "กรุณากรอกชื่อ" }]}
+              rules={[{ required: true, message: "Please enter name" }]} // แก้ message
             >
-              <Input placeholder="กรอกชื่อ-นามสกุล" />
+              <Input placeholder="Enter full name" />
             </Form.Item>
 
             <Form.Item
-              label="อายุ"
+              label="Age"
               name="age"
-              rules={[{ required: true, message: "กรุณากรอกอายุ" }]}
+              rules={[{ required: true, message: "Please enter age" }]} // แก้ message
             >
-              <Input placeholder="กรอกอายุ" />
+              {/* เพิ่ม type="number" เพื่อให้ input เหมาะสมขึ้น */}
+              <Input placeholder="Enter age" type="number" />
             </Form.Item>
 
             <Form.Item
-              label="เบอร์โทรศัพท์"
+              label="Phone Number"
               name="phone_number"
-              rules={[{ required: true, message: "กรุณากรอกเบอร์โทร" }]}
+              rules={[{ required: true, message: "Please enter phone number" }]} // แก้ message
             >
-              <Input placeholder="กรอกเบอร์โทรศัพท์" />
+              <Input placeholder="Enter phone number" />
             </Form.Item>
 
             <Form.Item
-              label="เลขบัตรประชาชน"
+              label="ID Number"
               name="id_number"
-              rules={[{ required: true, message: "กรุณากรอกเลขบัตรประชาชน" }]}
+              rules={[{ required: true, message: "Please enter ID number" }]} // แก้ message
             >
-              <Input placeholder="กรอกเลขบัตรประชาชน" />
+              <Input placeholder="Enter ID number" />
             </Form.Item>
 
             <Form.Item>
+              {/* เปลี่ยนข้อความปุ่ม */}
               <Button
                 type="primary"
                 htmlType="submit"
@@ -171,7 +176,7 @@ const FormUser = () => {
                 style={{ fontSize: "16px", height: "40px" }}
                 loading={isSubmitting}
               >
-                บันทึกข้อมูล
+                Save Data
               </Button>
             </Form.Item>
           </Form>

@@ -2,83 +2,65 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Space, message, Spin } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import deleteEffect from "../../components/DeleteEffect";
-// *** Import ฟังก์ชันที่ถูกต้อง ***
+// สมมติว่า deleteEffect คือ ConfirmEffect
+import deleteEffect from "../../components/ConfirmEffect";
 import {
   DeleteEmployee,
   FindDataEmployeeByUserId,
   GetAllMyEmployees,
 } from "../../functions/employee";
-// ไม่ต้องใช้ axios โดยตรงแล้ว
 
 const DataUser = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([]); // เริ่มต้นเป็น array ว่าง
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem("user"));
-  const userRole = user?.role; // ตรวจสอบชื่อ property 'role' ให้ถูกต้อง
+  const userRole = user?.role;
   const userId = user?.id;
 
-  // --- ฟังก์ชันโหลดข้อมูล (แยกออกมาเพื่อเรียกซ้ำได้) ---
   const fetchData = async () => {
     setLoading(true);
 
     if (!localStorage.getItem("accessToken")) {
-      message.error("กรุณาเข้าสู่ระบบก่อน (No Token Found)");
+      // เปลี่ยนเป็นภาษาอังกฤษ
+      message.error("Please log in first (No Token Found)");
       navigate("/login");
       setLoading(false);
       return;
     }
 
     try {
-      let res; // ประกาศตัวแปรสำหรับเก็บ response
-
-      // ***** 2. แก้ไขส่วนนี้: เพิ่มเงื่อนไขตรวจสอบ Role *****
+      let res;
       if (userRole === "admin") {
-        // ตรวจสอบค่า 'admin' ให้ถูกต้อง
-        console.log("[DataUser] User is admin. Calling GetAllMyEmployees.");
-        // เรียก API ดึงข้อมูลทั้งหมดสำหรับ Admin
         res = await GetAllMyEmployees();
       } else {
-        console.log(
-          "[DataUser] User is not admin. Calling FindDataEmployeeByUserId."
-        );
-        // เรียก API ดึงข้อมูลเฉพาะของ User ปัจจุบัน
         res = await FindDataEmployeeByUserId();
       }
-      // ****************************************************
 
-      // Log ข้อมูลที่ได้รับ (ปรับ Log message ให้ทั่วไป)
-      console.log("Data received from API:", res.data);
-
-      // --- ตั้งค่า State ด้วย Array ที่ได้มาโดยตรง (เหมือนเดิม) ---
       if (Array.isArray(res.data)) {
         setData(res.data);
       } else {
-        console.error(
-          "Expected an array from API, but received:", // ปรับ Log message
-          res.data
-        );
+        console.error("Expected an array from API, but received:", res.data);
         setData([]);
       }
     } catch (error) {
       console.error("Error fetching employee list:", error);
-      // ... (Error handling เหมือนเดิม) ...
       if (error.response) {
         if (error.response.status === 401 || error.response.status === 403) {
-          message.error(
-            "Session หมดอายุ หรือไม่มีสิทธิ์เข้าถึง กรุณาเข้าสู่ระบบใหม่"
-          );
+          // เปลี่ยนเป็นภาษาอังกฤษ
+          message.error("Session expired or unauthorized. Please log in again");
           navigate("/login");
         } else {
+          // เปลี่ยนเป็นภาษาอังกฤษ
           message.error(
-            `เกิดข้อผิดพลาด ${error.response.status}: ${
-              error.response.data?.message || "ไม่สามารถดึงข้อมูลได้"
+            `Error ${error.response.status}: ${
+              error.response.data?.message || "Could not fetch data"
             }`
           );
         }
       } else {
-        message.error("เกิดข้อผิดพลาดในการเชื่อมต่อ หรือการร้องขอข้อมูล");
+        // เปลี่ยนเป็นภาษาอังกฤษ
+        message.error("Connection or request error occurred");
       }
       setData([]);
     } finally {
@@ -86,47 +68,43 @@ const DataUser = () => {
     }
   };
 
-  // --- useEffect เรียก fetchData ครั้งแรก ---
   useEffect(() => {
     fetchData();
-    // Dependency array ว่าง หรือใส่ navigate ถ้าต้องการให้โหลดใหม่เมื่อ navigate กลับมา
-  }, [navigate]);
+  }, [navigate]); // เพิ่ม navigate ใน dependency array
 
-  // --- ฟังก์ชัน handleEmployeeRemove ---
   const handleEmployeeRemove = async (employeeId) => {
     if (!localStorage.getItem("accessToken")) {
-      message.error("กรุณาเข้าสู่ระบบก่อน (No Token Found)");
+      // เปลี่ยนเป็นภาษาอังกฤษ
+      message.error("Please log in first (No Token Found)");
       navigate("/login");
       return;
     }
-    // --- เรียกใช้ deleteEffect และรอผลลัพธ์ ---
-    const isConfirmed = await deleteEffect(); // รอให้ผู้ใช้กด Yes หรือ Cancel
 
-    // --- ทำการลบเฉพาะเมื่อผู้ใช้ยืนยัน (isConfirmed เป็น true) ---
+    const isConfirmed = await deleteEffect(); // ใช้ deleteEffect หรือ ConfirmEffect
+
     if (isConfirmed) {
       try {
-        setLoading(true); // เริ่ม loading หลังจากยืนยัน
+        setLoading(true);
         await DeleteEmployee(employeeId);
-        message.success("ลบข้อมูลสำเร็จ");
-        // โหลดข้อมูลใหม่หลังลบสำเร็จ
-        fetchData(); // เรียก fetchData() เพื่อโหลดข้อมูลล่าสุด
+        // เปลี่ยนเป็นภาษาอังกฤษ
+        message.success("Data deleted successfully");
+        fetchData();
       } catch (error) {
         console.error("Error deleting employee:", error);
+        // เปลี่ยนเป็นภาษาอังกฤษ
         const errorMsg =
-          error.response?.data?.message || "เกิดข้อผิดพลาดในการลบข้อมูล";
+          error.response?.data?.message ||
+          "An error occurred while deleting data";
         message.error(errorMsg);
-        // ไม่ต้อง fetchData() ถ้าลบไม่สำเร็จ
       } finally {
-        setLoading(false); // หยุด loading ไม่ว่าจะสำเร็จหรือล้มเหลว
+        setLoading(false);
       }
     } else {
-      // (Optional) ถ้าต้องการแจ้งเตือนว่ายกเลิก
-      // message.info("การลบถูกยกเลิก");
       console.log("Deletion cancelled by user.");
+      // message.info("Deletion cancelled"); // เปลี่ยน comment เป็นภาษาอังกฤษ
     }
   };
 
-  // --- Columns (เหมือนเดิม) ---
   const columns = [
     { title: "No.", render: (text, record, index) => index + 1 },
     { title: "Email", dataIndex: "email", key: "email" },
@@ -160,13 +138,9 @@ const DataUser = () => {
     },
   ];
 
-  // --- ปุ่ม Add ด้านบน (แสดงเสมอ) ---
   const renderTopButton = () => {
-    // ไม่ต้องเช็ค userHasInfo แล้ว
     return (
       <Link to={`/form/${userId}`}>
-        {" "}
-        {/* Link ไปหน้า FormUser */}
         <Button
           type="primary"
           style={{
@@ -183,8 +157,9 @@ const DataUser = () => {
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "scale(1)";
           }}
-          disabled={loading} // ปิดปุ่มขณะ loading
+          disabled={loading}
         >
+          {/* ข้อความปุ่มเป็นภาษาอังกฤษอยู่แล้ว */}
           Add Your Information
         </Button>
       </Link>
@@ -200,14 +175,14 @@ const DataUser = () => {
           marginBottom: "16px",
         }}
       >
-        {renderTopButton()} {/* แสดงปุ่ม Add เสมอ */}
+        {renderTopButton()}
       </div>
       <Spin spinning={loading}>
         <Table
           columns={columns}
-          dataSource={data} // ควรจะเป็น Array ที่มีหลาย object (หรือว่าง)
+          dataSource={data}
           rowKey="id"
-          pagination={false} // หรือ true ถ้าต้องการแบ่งหน้า
+          pagination={false}
           style={{
             background: "#fff",
             borderRadius: "10px",

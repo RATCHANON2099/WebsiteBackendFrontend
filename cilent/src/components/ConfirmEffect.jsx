@@ -10,7 +10,7 @@ const ConfirmEffect = () => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Edit",
+    confirmButtonText: "Confirm",
     cancelButtonText: "Cancel",
   }).then((result) => {
     return result.isConfirmed; // ✅ true ถ้ากด "Yes", false ถ้า "Cancel"
