@@ -1,23 +1,22 @@
-import axios from "axios";
+// src/functions/user.js
+import axiosInstance from "../api/axiosInstance";
 
-export const remove = async (id) =>
-  await axios.delete(import.meta.env.VITE_API_URL + "/user/" + id);
+export const remove = async (id) => await axiosInstance.delete("/user/" + id);
 
-export const create = async (data) =>
-  await axios.post(import.meta.env.VITE_API_URL + "/user/", data);
+export const create = async (data) => await axiosInstance.post("/user/", data);
 
 export const getdata = async () => {
-  return await axios.get(import.meta.env.VITE_API_URL + "/user/");
+  return await axiosInstance.get("/user/");
 };
 
 export const read = async (id) => {
-  return await axios.get(import.meta.env.VITE_API_URL + "/user/" + id);
+  return await axiosInstance.get("/user/" + id);
 };
 
 export const update = async (id, data) => {
-  return await axios.put(import.meta.env.VITE_API_URL + "/user/" + id, data);
+  return await axiosInstance.put("/user/" + id, data);
 };
 
 export const register = async (data) => {
-  return await axios.post(import.meta.env.VITE_API_URL + "/register/", data);
+  return await axiosInstance.post("/register/", data);
 };
