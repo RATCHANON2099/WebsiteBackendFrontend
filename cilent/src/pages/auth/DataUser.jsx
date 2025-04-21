@@ -22,8 +22,8 @@ const DataUser = () => {
   // --- ฟังก์ชันโหลดข้อมูล (แยกออกมาเพื่อเรียกซ้ำได้) ---
   const fetchData = async () => {
     setLoading(true);
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
       message.error("กรุณาเข้าสู่ระบบก่อน");
       navigate("/login");
       setLoading(false);
@@ -38,13 +38,13 @@ const DataUser = () => {
         // ตรวจสอบค่า 'admin' ให้ถูกต้อง
         console.log("[DataUser] User is admin. Calling GetAllMyEmployees.");
         // เรียก API ดึงข้อมูลทั้งหมดสำหรับ Admin
-        res = await GetAllMyEmployees(token);
+        res = await GetAllMyEmployees(accessToken);
       } else {
         console.log(
           "[DataUser] User is not admin. Calling FindDataEmployeeByUserId."
         );
         // เรียก API ดึงข้อมูลเฉพาะของ User ปัจจุบัน
-        res = await FindDataEmployeeByUserId(token);
+        res = await FindDataEmployeeByUserId(accessToken);
       }
       // ****************************************************
 
@@ -94,8 +94,8 @@ const DataUser = () => {
 
   // --- ฟังก์ชัน handleEmployeeRemove ---
   const handleEmployeeRemove = async (employeeId) => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
       message.error("กรุณาเข้าสู่ระบบก่อน");
       navigate("/login"); // หรือแค่ return ถ้ามีการตรวจสอบ login ที่อื่นแล้ว
       return;
@@ -107,7 +107,7 @@ const DataUser = () => {
     if (isConfirmed) {
       try {
         setLoading(true); // เริ่ม loading หลังจากยืนยัน
-        await DeleteEmployee(employeeId, token);
+        await DeleteEmployee(employeeId, accessToken);
         message.success("ลบข้อมูลสำเร็จ");
         // โหลดข้อมูลใหม่หลังลบสำเร็จ
         fetchData(); // เรียก fetchData() เพื่อโหลดข้อมูลล่าสุด

@@ -16,16 +16,18 @@ const Login = () => {
         values
       );
 
+      // รับข้อมูลจาก Backend
       const user = res.data.user; // { id, name, email }
-      const token = res.data.token;
+      const accessToken = res.data.accessToken;
 
-      if (!user || !user.id || !token) {
+      // ตรวจสอบว่ามีข้อมูล user และ token หรือไม่
+      if (!user || !user.id || !accessToken) {
         throw new Error("Missing user or token"); // โยน error เอง
       }
 
       // บันทึกข้อมูลลง localStorage เผื่อใช้ภายหลัง
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("token", token);
+      localStorage.setItem("accessToken", accessToken);
 
       // ถ้าไม่มีชื่อหรือ name เป็น null ให้แสดงชื่อเป็น USER
       const userName = user?.name?.trim() ? user.name : "USER";

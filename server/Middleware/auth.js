@@ -1,4 +1,4 @@
-// c:\project2\server\Middleware\auth.js
+// server\Middleware\auth.js
 const jwt = require("jsonwebtoken");
 // ไม่จำเป็นต้อง import User Model ที่นี่ ถ้าเราใช้ข้อมูลจาก Payload โดยตรง
 
@@ -29,10 +29,15 @@ exports.auth = async (req, res, next) => {
     // --- Log #4: ดู Secret Key ที่ใช้ (สำคัญมาก!) ---
     // ตรวจสอบว่า Secret Key ตรงกับตอน Sign Token หรือไม่
     // ถ้าใช้ Environment Variable ให้ Log process.env.JWT_SECRET แทน "jwtsecret"
-    console.log("Verifying token with secret:", "jwtsecret"); // หรือ process.env.JWT_SECRET
+    console.log(
+      "Verifying token with secret from process.env.JWT_ACCESS_SECRET"
+    ); // แก้ไข Log
 
     // 4. ตรวจสอบ token และดึงข้อมูล Payload
-    const decoded = jwt.verify(tokenValue, "jwtsecret"); // ใช้ Secret Key ของคุณ
+    const decoded = jwt.verify(
+      tokenValue,
+      process.env.JWT_ACCESS_SECRET // <--- *** แก้ไขตรงนี้ *** ใช้ Secret จาก .env
+    );
 
     // --- Log #5: ดู Payload ที่ถอดรหัสได้ (สำคัญมาก!) ---
     // ตรวจสอบว่ามี id, email, role ถูกต้องหรือไม่

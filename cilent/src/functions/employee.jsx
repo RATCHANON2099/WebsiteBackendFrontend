@@ -4,62 +4,62 @@ import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 
 // ใช้ดึงข้อมูลทั้งหมดของ Employee
-export const GetAllMyEmployees = async (token) => {
+export const GetAllMyEmployees = async (accessToken) => {
   // ควรส่ง token ไปด้วยถ้า endpoint ต้องการ
   return await axios.get(`${API_URL}/employee/all`, {
     // เปลี่ยน API เป็น API_URL
     headers: {
-      Authorization: `Bearer ${token}`, // เพิ่ม header ถ้าจำเป็น
+      Authorization: `Bearer ${accessToken}`, // เพิ่ม header ถ้าจำเป็น
     },
   });
 };
 
 // ใช้ดึงข้อมูลทั้งหมดของ Employee ที่ userId ตรงกับ id ผู้ล็อคอิน
-export const FindDataEmployeeByUserId = async (token) => {
+export const FindDataEmployeeByUserId = async (accessToken) => {
   // ควรส่ง token ไปด้วยถ้า endpoint ต้องการ
   return await axios.get(`${API_URL}/employee`, {
     // เปลี่ยน API เป็น API_URL
     headers: {
-      Authorization: `Bearer ${token}`, // เพิ่ม header ถ้าจำเป็น
+      Authorization: `Bearer ${accessToken}`, // เพิ่ม header ถ้าจำเป็น
     },
   });
 };
 
 // ใช้เพิ่มข้อมูล Employee ที่กรอกลงในฟอร์ม (อันนี้ถูกต้องอยู่แล้ว)
-export const AddEmployee = async (data, token) => {
+export const AddEmployee = async (data, accessToken) => {
   console.log("Data being sent:", data);
   return await axios.post(`${API_URL}/employee/`, data, {
     // ใช้ API_URL (เดิมถูกต้องแล้ว)
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 };
 
-export const GetDataEmployeeById = async (id, token) => {
+export const GetDataEmployeeById = async (id, accessToken) => {
   return await axios.get(`${API_URL}/employee/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 };
 
 // ใช้แก้ไขข้อมูล Employee ที่กรอกลงในฟอร์ม
-export const UpdateEmployee = async (id, data, token) => {
+export const UpdateEmployee = async (id, data, accessToken) => {
   return await axios.put(`${API_URL}/employee/${id}`, data, {
     // เปลี่ยน API เป็น API_URL
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 };
 
 // ใช้ลบข้อมูล Employee ที่กรอกลงในฟอร์ม
-export const DeleteEmployee = async (id, token) => {
+export const DeleteEmployee = async (id, accessToken) => {
   return await axios.delete(`${API_URL}/employee/${id}`, {
     // เปลี่ยน API เป็น API_URL
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 };

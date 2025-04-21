@@ -12,8 +12,8 @@ const FormUser = () => {
   const userId = user?.id;
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
       message.error("กรุณาเข้าสู่ระบบก่อน");
       navigate("/login");
     }
@@ -21,9 +21,9 @@ const FormUser = () => {
 
   const onFinish = async (values) => {
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
 
-      if (!token || !userId) {
+      if (!accessToken || !userId) {
         message.error("ข้อมูลการยืนยันตัวตนไม่สมบูรณ์ กรุณาลองเข้าสู่ระบบใหม่");
         navigate("/login");
         return;
@@ -33,7 +33,7 @@ const FormUser = () => {
         userId: userId,
       };
 
-      await AddEmployee(dataToSend, token);
+      await AddEmployee(dataToSend, accessToken);
 
       message.success("บันทึกข้อมูลสำเร็จ");
       form.resetFields();

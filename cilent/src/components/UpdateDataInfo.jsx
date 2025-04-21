@@ -17,8 +17,8 @@ const UpdateDataInfo = () => {
 
   useEffect(() => {
     console.log("[UpdateDataInfo] useEffect triggered. ID from params:", id);
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
       message.error("กรุณาเข้าสู่ระบบก่อน");
       navigate("/login");
       setInitialLoading(false);
@@ -31,7 +31,7 @@ const UpdateDataInfo = () => {
           "[UpdateDataInfo] Calling GetDataEmployeeById with ID:",
           id
         );
-        const res = await GetDataEmployeeById(id, token);
+        const res = await GetDataEmployeeById(id, accessToken);
         console.log("[UpdateDataInfo] API Response Data (res.data):", res.data);
         if (
           res.data &&
@@ -78,8 +78,8 @@ const UpdateDataInfo = () => {
   // *** 2. แก้ไข onFinish ให้เรียก ConfirmEffect ก่อน ***
   const onFinish = async (values) => {
     console.log("[UpdateDataInfo] onFinish triggered with values:", values);
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
       message.error("Session หมดอายุ กรุณาเข้าสู่ระบบใหม่");
       navigate("/login");
       return;
@@ -95,7 +95,7 @@ const UpdateDataInfo = () => {
       setIsUpdating(true); // *** เริ่ม loading ของการอัปเดต ***
       try {
         // เรียกใช้ UpdateEmployee
-        await UpdateEmployee(id, values, token);
+        await UpdateEmployee(id, values, accessToken);
         message.success("อัปเดตข้อมูลสำเร็จ");
         navigate(`/datauser`); // กลับไปหน้าแสดงข้อมูล
       } catch (error) {

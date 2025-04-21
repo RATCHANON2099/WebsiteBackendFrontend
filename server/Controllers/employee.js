@@ -1,6 +1,6 @@
 // Controllers/employee.js
 //notdone
-const { Employee } = require("../models/employee");
+const { Employee } = require("../models");
 
 exports.GetAllEmployee = async (req, res) => {
   // *** เพิ่ม Log เพื่อดู req.user ที่ Middleware ส่งมา ***
@@ -44,7 +44,7 @@ exports.FindDataEmployeeByUserId = async (req, res) => {
     }
 
     console.log("--- FindDataEmployeeByUserId ---");
-    console.log("User ID from token (req.user.id):", req.user.id);
+    console.log("User ID from accessToken (req.user.id):", req.user.id);
     console.log("Type of req.user.id:", typeof req.user.id); // ดูชนิดข้อมูลด้วย
 
     const employees = await Employee.findAll({

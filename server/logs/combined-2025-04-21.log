@@ -241,3 +241,95 @@ Require stack:
 2025-04-21 13:02:11 info: Login attempt for email: test2@gmail.com
 2025-04-21 13:02:11 info: Refresh token created for user ID: 2
 2025-04-21 13:03:14 info: Access token refreshed successfully for user ID: 2
+2025-04-21 13:19:39 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:19:40 info: Refresh token created for user ID: 2
+2025-04-21 13:20:59 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:20:59 info: Refresh token created for user ID: 2
+2025-04-21 13:22:07 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:22:07 info: Refresh token created for user ID: 2
+2025-04-21 13:22:57 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:22:58 info: Refresh token created for user ID: 2
+2025-04-21 13:24:18 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:24:18 info: Refresh token created for user ID: 2
+2025-04-21 13:24:30 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:24:30 info: Refresh token created for user ID: 2
+2025-04-21 13:29:58 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:29:58 info: Refresh token created for user ID: 2
+2025-04-21 13:32:28 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:32:28 info: Refresh token created for user ID: 2
+2025-04-21 13:32:33 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:32:33 info: Refresh token created for user ID: 2
+2025-04-21 13:32:43 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:32:43 info: Refresh token created for user ID: 2
+2025-04-21 13:38:08 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:38:09 info: Refresh token created for user ID: 2
+2025-04-21 13:38:27 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:38:28 info: Refresh token created for user ID: 2
+2025-04-21 13:45:15 info: Loading routes...
+2025-04-21 13:45:15 info: Loaded route: auth.js mounted under /api
+2025-04-21 13:45:15 info: Loaded route: employee.js mounted under /api
+2025-04-21 13:45:15 info: Loaded route: user.js mounted under /api
+2025-04-21 13:45:15 info: Finished loading routes.
+2025-04-21 13:45:15 info: 🚀 Server Running On Port 5000
+2025-04-21 13:45:15 info: Database connection verified successfully via models/index.js.
+2025-04-21 13:47:41 info: Loading routes...
+2025-04-21 13:47:41 info: Loaded route: auth.js mounted under /api
+2025-04-21 13:47:41 info: Loaded route: employee.js mounted under /api
+2025-04-21 13:47:41 info: Loaded route: user.js mounted under /api
+2025-04-21 13:47:41 info: Finished loading routes.
+2025-04-21 13:47:41 info: 🚀 Server Running On Port 5000
+2025-04-21 13:47:42 info: Database connection verified successfully via models/index.js.
+2025-04-21 13:47:44 info: Loading routes...
+2025-04-21 13:47:44 info: Loaded route: auth.js mounted under /api
+2025-04-21 13:47:44 info: Loaded route: employee.js mounted under /api
+2025-04-21 13:47:44 info: Loaded route: user.js mounted under /api
+2025-04-21 13:47:44 info: Finished loading routes.
+2025-04-21 13:47:44 info: 🚀 Server Running On Port 5000
+2025-04-21 13:47:44 info: Database connection verified successfully via models/index.js.
+2025-04-21 13:50:02 info: Loading routes...
+2025-04-21 13:50:02 info: Loaded route: auth.js mounted under /api
+2025-04-21 13:50:02 info: Loaded route: employee.js mounted under /api
+2025-04-21 13:50:02 info: Loaded route: user.js mounted under /api
+2025-04-21 13:50:02 info: Finished loading routes.
+2025-04-21 13:50:02 info: 🚀 Server Running On Port 5000
+2025-04-21 13:50:02 info: Database connection verified successfully via models/index.js.
+2025-04-21 13:50:48 info: Loading routes...
+2025-04-21 13:50:48 info: Loaded route: auth.js mounted under /api
+2025-04-21 13:50:48 info: Loaded route: employee.js mounted under /api
+2025-04-21 13:50:48 info: Loaded route: user.js mounted under /api
+2025-04-21 13:50:48 info: Finished loading routes.
+2025-04-21 13:50:48 info: 🚀 Server Running On Port 5000
+2025-04-21 13:50:49 info: Database connection verified successfully via models/index.js.
+2025-04-21 13:51:02 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:51:02 info: Refresh token created for user ID: 2
+2025-04-21 13:55:37 info: Loading routes...
+2025-04-21 13:55:37 info: Loaded route: auth.js mounted under /api
+2025-04-21 13:55:37 info: Loaded route: employee.js mounted under /api
+2025-04-21 13:55:37 info: Loaded route: user.js mounted under /api
+2025-04-21 13:55:37 info: Finished loading routes.
+2025-04-21 13:55:37 info: 🚀 Server Running On Port 5000
+2025-04-21 13:55:37 info: Database connection verified successfully via models/index.js.
+2025-04-21 13:55:49 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:55:49 info: Refresh token created for user ID: 2
+2025-04-21 13:56:04 info: Login attempt for email: test1@gmail.com
+2025-04-21 13:56:04 info: Refresh token created for user ID: 1
+2025-04-21 13:56:55 info: Login attempt for email: test1@gmail.com
+2025-04-21 13:56:55 info: Refresh token created for user ID: 1
+2025-04-21 13:59:34 info: Login attempt for email: test2@gmail.com
+2025-04-21 13:59:34 info: Refresh token created for user ID: 2
+2025-04-21 14:01:32 info: Login attempt for email: test1@gmail.com
+2025-04-21 14:01:33 info: Refresh token created for user ID: 1
+2025-04-21 14:03:11 info: Login attempt for email: test4@gamil.com
+2025-04-21 14:03:11 warn: Login failed: User not found for email test4@gamil.com
+2025-04-21 14:03:12 info: Login attempt for email: test4@gamil.com
+2025-04-21 14:03:12 warn: Login failed: User not found for email test4@gamil.com
+2025-04-21 14:03:13 info: Login attempt for email: test4@gamil.com
+2025-04-21 14:03:13 warn: Login failed: User not found for email test4@gamil.com
+2025-04-21 14:03:13 info: Login attempt for email: test4@gamil.com
+2025-04-21 14:03:13 warn: Login failed: User not found for email test4@gamil.com
+2025-04-21 14:03:14 info: Login attempt for email: test4@gamil.com
+2025-04-21 14:03:14 warn: Login failed: User not found for email test4@gamil.com
+2025-04-21 14:03:14 info: Login attempt for email: test4@gamil.com
+2025-04-21 14:03:14 warn: Login failed: User not found for email test4@gamil.com
+2025-04-21 14:03:33 info: Login attempt for email: test4@gamil.com
+2025-04-21 14:03:33 info: Refresh token created for user ID: 5
