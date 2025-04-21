@@ -353,3 +353,58 @@ Require stack:
 2025-04-21 15:19:32 info: Database connection verified successfully via models/index.js.
 2025-04-21 15:19:46 info: Login attempt for email: test2@gmail.com
 2025-04-21 15:19:46 info: Refresh token created for user ID: 2
+2025-04-21 15:21:21 info: Loading routes...
+2025-04-21 15:21:21 info: Loaded route: auth.js mounted under /api
+2025-04-21 15:21:21 info: Loaded route: employee.js mounted under /api
+2025-04-21 15:21:21 info: Loaded route: user.js mounted under /api
+2025-04-21 15:21:21 info: Finished loading routes.
+2025-04-21 15:21:21 info: 🚀 Server Running On Port 5000
+2025-04-21 15:21:22 info: Database connection verified successfully via models/index.js.
+2025-04-21 15:21:28 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:21:28 info: Refresh token created for user ID: 2
+2025-04-21 15:23:46 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:23:46 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:23:54 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:23:54 info: Refresh token created for user ID: 2
+2025-04-21 15:24:11 info: Loading routes...
+2025-04-21 15:24:11 info: Loaded route: auth.js mounted under /api
+2025-04-21 15:24:11 info: Loaded route: employee.js mounted under /api
+2025-04-21 15:24:11 info: Loaded route: user.js mounted under /api
+2025-04-21 15:24:11 info: Finished loading routes.
+2025-04-21 15:24:11 info: 🚀 Server Running On Port 5000
+2025-04-21 15:24:11 info: Database connection verified successfully via models/index.js.
+2025-04-21 15:24:39 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:24:39 info: Refresh token created for user ID: 2
+2025-04-21 15:24:49 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:24:49 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:25:02 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:25:03 info: Refresh token created for user ID: 2
+2025-04-21 15:25:18 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:25:18 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:29:23 info: Loading routes...
+2025-04-21 15:29:23 info: Loaded route: auth.js mounted under /api
+2025-04-21 15:29:23 info: Loaded route: employee.js mounted under /api
+2025-04-21 15:29:23 info: Loaded route: user.js mounted under /api
+2025-04-21 15:29:23 info: Finished loading routes.
+2025-04-21 15:29:23 info: 🚀 Server Running On Port 5000
+2025-04-21 15:29:23 info: Database connection verified successfully via models/index.js.
+2025-04-21 15:29:36 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:29:37 info: Refresh token created for user ID: 2
+2025-04-21 15:29:49 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:29:49 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:30:00 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:30:00 info: Refresh token created for user ID: 2
+2025-04-21 15:30:16 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:30:16 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:35:13 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:35:13 info: Refresh token created for user ID: 2
+2025-04-21 15:35:26 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:35:26 warn: Refresh token failed: No token provided in cookie.
+2025-04-21 15:39:16 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:39:16 warn: Login failed: Invalid password for email test2@gmail.com
+2025-04-21 15:39:19 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:39:19 info: Refresh token created for user ID: 2
+2025-04-21 15:50:23 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:50:23 info: Refresh token created for user ID: 2
+2025-04-21 15:50:34 info: Access token refreshed successfully for user ID: 2
+2025-04-21 15:50:34 info: Access token refreshed successfully for user ID: 2

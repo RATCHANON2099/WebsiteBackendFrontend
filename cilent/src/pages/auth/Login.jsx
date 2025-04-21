@@ -2,7 +2,7 @@
 import React from "react";
 import { Button, Form, Input, notification, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 import { Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons"; // นำเข้าลูกศรชี้ลง
 
@@ -11,10 +11,7 @@ const Login = () => {
   const onFinish = async (values) => {
     try {
       // เรียก backend /login
-      const res = await axios.post(
-        import.meta.env.VITE_API_URL + "/login",
-        values
-      );
+      const res = await axiosInstance.post("/login", values);
 
       // รับข้อมูลจาก Backend
       const user = res.data.user; // { id, name, email }
