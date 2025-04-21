@@ -47,5 +47,82 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+axiosInstance.interceptors.response.use(
+  // กรณี Response สำเร็จ
+  (response) => {
+    console.log(
+      "[Response Interceptor] Request Successful:",
+      response.config.url
+    );
+    return response;
+  },
+  // กรณี Response ล้มเหลว
+  async (error) => {
+    console.log(
+      "[Response Interceptor] Request Failed:",
+      error.config?.url,
+      "Status:",
+      error.response?.status
+    );
+
+    const originalRequest = error.config;
+
+    // ตรวจสอบเงื่อนไข: 401, ไม่ใช่ /refresh, ยังไม่ได้ Retry
+    if (
+      error.response?.status === 401 &&
+      originalRequest.url !== "/refresh" &&
+      !originalRequest._retry
+    ) {
+      console.log(
+        "[Response Interceptor] Detected 401. Attempting token refresh..."
+      );
+      originalRequest._retry = true; // ตั้ง Flag กัน Loop
+
+      try {
+        // เรียก /api/refresh
+        const refreshResponse = await axiosInstance.post("/refresh");
+        const { accessToken } = refreshResponse.data;
+        console.log("[Response Interceptor] Token refresh successful.");
+
+        // อัปเดต Token ใน localStorage
+        localStorage.setItem("accessToken", accessToken);
+
+        // อัปเดต Header ใน Request เดิม
+        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+
+        // ลองส่ง Request เดิมซ้ำ
+        console.log(
+          "[Response Interceptor] Retrying original request:",
+          originalRequest.url
+        );
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        // ถ้า Refresh ล้มเหลว
+        console.error(
+          "[Response Interceptor] Token refresh failed:",
+          refreshError.response?.data || refreshError.message
+        );
+
+        // Logout User
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("user");
+        // (Optional: Clear Cookie, Call API Logout)
+
+        // Redirect (อาจจะทำที่นี่ หรือปล่อยให้ Component จัดการ Error)
+        // window.location.href = '/login'; // วิธี Redirect ง่ายๆ
+
+        // ส่ง Error กลับไปให้ Component
+        return Promise.reject(refreshError || error);
+      }
+    }
+
+    // ถ้าไม่ใช่ 401 หรือเงื่อนไขไม่ตรง ก็ส่ง Error เดิมกลับไป
+    console.log(
+      "[Response Interceptor] Error is not 401 or cannot retry. Rejecting error."
+    );
+    return Promise.reject(error);
+  }
+);
+
 // Export ตัว Instance นี้ออกไปเพื่อให้ไฟล์อื่นเรียกใช้ได้
 export default axiosInstance;

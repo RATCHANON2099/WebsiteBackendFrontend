@@ -333,3 +333,23 @@ Require stack:
 2025-04-21 14:03:14 warn: Login failed: User not found for email test4@gamil.com
 2025-04-21 14:03:33 info: Login attempt for email: test4@gamil.com
 2025-04-21 14:03:33 info: Refresh token created for user ID: 5
+2025-04-21 15:16:11 info: Loading routes...
+2025-04-21 15:16:11 info: Loaded route: auth.js mounted under /api
+2025-04-21 15:16:11 info: Loaded route: employee.js mounted under /api
+2025-04-21 15:16:11 info: Loaded route: user.js mounted under /api
+2025-04-21 15:16:11 info: Finished loading routes.
+2025-04-21 15:16:11 info: 🚀 Server Running On Port 5000
+2025-04-21 15:16:11 info: Database connection verified successfully via models/index.js.
+2025-04-21 15:16:15 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:16:16 info: Refresh token created for user ID: 2
+2025-04-21 15:17:12 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:17:12 info: Refresh token created for user ID: 2
+2025-04-21 15:19:32 info: Loading routes...
+2025-04-21 15:19:32 info: Loaded route: auth.js mounted under /api
+2025-04-21 15:19:32 info: Loaded route: employee.js mounted under /api
+2025-04-21 15:19:32 info: Loaded route: user.js mounted under /api
+2025-04-21 15:19:32 info: Finished loading routes.
+2025-04-21 15:19:32 info: 🚀 Server Running On Port 5000
+2025-04-21 15:19:32 info: Database connection verified successfully via models/index.js.
+2025-04-21 15:19:46 info: Login attempt for email: test2@gmail.com
+2025-04-21 15:19:46 info: Refresh token created for user ID: 2

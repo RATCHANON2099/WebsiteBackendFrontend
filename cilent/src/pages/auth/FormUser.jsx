@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, Button, message, Layout } from "antd";
 import { useNavigate } from "react-router-dom";
 import { AddEmployee } from "../../functions/employee";
+import ConfirmEffect from "../../components/ConfirmEffect";
 
 const FormUser = () => {
   const [form] = Form.useForm();
@@ -10,6 +11,7 @@ const FormUser = () => {
   const { Content } = Layout;
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -20,32 +22,58 @@ const FormUser = () => {
   }, []);
 
   const onFinish = async (values) => {
-    try {
-      const accessToken = localStorage.getItem("accessToken");
+    if (!localStorage.getItem("accessToken")) {
+      message.error("Session หมดอายุ กรุณาเข้าสู่ระบบใหม่ (No Token Found)");
+      navigate("/login");
+      return;
+    }
 
-      if (!accessToken || !userId) {
-        message.error("ข้อมูลการยืนยันตัวตนไม่สมบูรณ์ กรุณาลองเข้าสู่ระบบใหม่");
-        navigate("/login");
-        return;
+    const isConfirmed = await ConfirmEffect();
+    console.log("Confirmation result:", isConfirmed);
+
+    if (isConfirmed) {
+      // VVV ย้าย try...catch...finally เข้ามาในนี้ VVV
+      setIsSubmitting(true); // เริ่ม Loading
+
+      try {
+        if (!userId) {
+          // ควรจะเช็ค userId ก่อน Confirm หรือไม่? พิจารณาตาม Flow ที่ต้องการ
+          message.error("ไม่พบข้อมูลผู้ใช้ กรุณาลองเข้าสู่ระบบใหม่");
+          navigate("/login");
+          setIsSubmitting(false); // หยุด Loading ถ้า Error ก่อนเรียก API
+          return;
+        }
+
+        const dataToSend = {
+          ...values,
+          // userId: userId, // ไม่ต้องส่ง ถ้า Backend ดึงจาก req.user.id
+        };
+
+        await AddEmployee(dataToSend); // เรียก API
+
+        message.success("บันทึกข้อมูลสำเร็จ");
+        form.resetFields();
+        navigate(`/datauser`);
+      } catch (error) {
+        console.error("เกิดข้อผิดพลาดในการสร้างข้อมูลพนักงาน:", error);
+        const errorMessage =
+          error.response?.data?.message ||
+          error.response?.data ||
+          "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
+        message.error(errorMessage);
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          navigate("/login");
+        }
+      } finally {
+        setIsSubmitting(false); // หยุด Loading เสมอ ไม่ว่าจะสำเร็จหรือล้มเหลว
       }
-      const dataToSend = {
-        ...values,
-        userId: userId,
-      };
-
-      await AddEmployee(dataToSend, accessToken);
-
-      message.success("บันทึกข้อมูลสำเร็จ");
-      form.resetFields();
-      navigate(`/datauser`);
-    } catch (error) {
-      console.error("เกิดข้อผิดพลาดในการสร้างข้อมูลพนักงาน:", error);
-
-      const errorMessage =
-        error.response?.data?.message || // ลองดึง message จาก backend response
-        error.response?.data || // ลองดึงข้อมูล error อื่นๆ จาก backend response
-        "เกิดข้อผิดพลาดในการบันทึกข้อมูล"; // ข้อความ fallback
-      message.error(errorMessage);
+      // --- สิ้นสุดส่วนที่ย้ายเข้ามา ---
+    } else {
+      console.log("Submission cancelled by user.");
+      // message.info("การบันทึกถูกยกเลิก"); // Optional
     }
   };
 
@@ -141,6 +169,7 @@ const FormUser = () => {
                 htmlType="submit"
                 block
                 style={{ fontSize: "16px", height: "40px" }}
+                loading={isSubmitting}
               >
                 บันทึกข้อมูล
               </Button>

@@ -20,6 +20,12 @@ const app = express();
 // Import db object ที่มี models และ sequelize instance จาก index.js
 const db = require("./models");
 
+const corsOptions = {
+  origin: "http://localhost:5173", // *** ระบุ Origin ของ Frontend ของคุณ ***
+  credentials: true, // *** อนุญาตให้ส่ง Cookies และ Authorization Headers ***
+  optionsSuccessStatus: 200, // บาง Browser เก่าๆ มีปัญหากับ 204
+};
+
 // ตรวจสอบการเชื่อมต่อโดยใช้ sequelize instance จาก db object
 db.sequelize
   .authenticate()
@@ -38,7 +44,7 @@ db.sequelize
 
 // Middleware
 app.use(morgan("dev"));
-app.use(cors()); // พิจารณาตั้งค่า options สำหรับ production
+app.use(cors(corsOptions)); // พิจารณาตั้งค่า options สำหรับ production
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(cookieParser());
 // app.use("/api/auth", authRoutes); // <<< ลบบรรทัดนี้ออกแล้ว

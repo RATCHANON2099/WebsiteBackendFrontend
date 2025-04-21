@@ -22,9 +22,9 @@ const DataUser = () => {
   // --- ฟังก์ชันโหลดข้อมูล (แยกออกมาเพื่อเรียกซ้ำได้) ---
   const fetchData = async () => {
     setLoading(true);
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      message.error("กรุณาเข้าสู่ระบบก่อน");
+
+    if (!localStorage.getItem("accessToken")) {
+      message.error("กรุณาเข้าสู่ระบบก่อน (No Token Found)");
       navigate("/login");
       setLoading(false);
       return;
@@ -38,13 +38,13 @@ const DataUser = () => {
         // ตรวจสอบค่า 'admin' ให้ถูกต้อง
         console.log("[DataUser] User is admin. Calling GetAllMyEmployees.");
         // เรียก API ดึงข้อมูลทั้งหมดสำหรับ Admin
-        res = await GetAllMyEmployees(accessToken);
+        res = await GetAllMyEmployees();
       } else {
         console.log(
           "[DataUser] User is not admin. Calling FindDataEmployeeByUserId."
         );
         // เรียก API ดึงข้อมูลเฉพาะของ User ปัจจุบัน
-        res = await FindDataEmployeeByUserId(accessToken);
+        res = await FindDataEmployeeByUserId();
       }
       // ****************************************************
 
@@ -94,10 +94,9 @@ const DataUser = () => {
 
   // --- ฟังก์ชัน handleEmployeeRemove ---
   const handleEmployeeRemove = async (employeeId) => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      message.error("กรุณาเข้าสู่ระบบก่อน");
-      navigate("/login"); // หรือแค่ return ถ้ามีการตรวจสอบ login ที่อื่นแล้ว
+    if (!localStorage.getItem("accessToken")) {
+      message.error("กรุณาเข้าสู่ระบบก่อน (No Token Found)");
+      navigate("/login");
       return;
     }
     // --- เรียกใช้ deleteEffect และรอผลลัพธ์ ---
@@ -107,7 +106,7 @@ const DataUser = () => {
     if (isConfirmed) {
       try {
         setLoading(true); // เริ่ม loading หลังจากยืนยัน
-        await DeleteEmployee(employeeId, accessToken);
+        await DeleteEmployee(employeeId);
         message.success("ลบข้อมูลสำเร็จ");
         // โหลดข้อมูลใหม่หลังลบสำเร็จ
         fetchData(); // เรียก fetchData() เพื่อโหลดข้อมูลล่าสุด
