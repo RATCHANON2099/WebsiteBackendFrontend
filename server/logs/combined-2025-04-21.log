@@ -408,3 +408,10 @@ Require stack:
 2025-04-21 15:50:23 info: Refresh token created for user ID: 2
 2025-04-21 15:50:34 info: Access token refreshed successfully for user ID: 2
 2025-04-21 15:50:34 info: Access token refreshed successfully for user ID: 2
+2025-04-21 15:53:49 info: Loading routes...
+2025-04-21 15:53:49 info: Loaded route: auth.js mounted under /api
+2025-04-21 15:53:49 info: Loaded route: employee.js mounted under /api
+2025-04-21 15:53:49 info: Loaded route: user.js mounted under /api
+2025-04-21 15:53:49 info: Finished loading routes.
+2025-04-21 15:53:49 info: 🚀 Server Running On Port 5000
+2025-04-21 15:53:49 info: Database connection verified successfully via models/index.js.
